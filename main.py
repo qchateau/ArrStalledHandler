@@ -35,6 +35,7 @@ STALLED_ACTION = os.getenv("STALLED_ACTION", "BLOCKLIST_AND_SEARCH").upper()
 VERBOSE = os.getenv("VERBOSE", "false").lower() == "true"
 RUN_INTERVAL = int(os.getenv("RUN_INTERVAL", 300))  # Default to 300 seconds
 COUNT_DOWNLOADING_METADATA_AS_STALLED = os.getenv("COUNT_DOWNLOADING_METADATA_AS_STALLED", "false").lower() == "true"
+PROTOCOL = os.getenv("PROTOCOL","torrent")
 
 DB_FILE = "stalled_downloads.db"
 
@@ -145,7 +146,7 @@ def detect_stuck_metadata_downloads(base_url, api_key, service_name, api_version
 
     # Query parameters for metadata detection
     params = {
-        "protocol": "torrent",
+        "protocol": PROTOCOL,
         "status": "queued",  # Only look for queued downloads
         "includeEpisode": "true" if service_name == "Sonarr" else "false"
     }
@@ -282,7 +283,7 @@ def handle_stalled_downloads(base_url, api_key, service_name, api_version):
 
     # Query parameters for stalled detection
     params = {
-        "protocol": "torrent",
+        "protocol": PROTOCOL,
         "status": "warning",  # Only look for stalled downloads
         "includeEpisode": "true" if service_name == "Sonarr" else "false"
     }
